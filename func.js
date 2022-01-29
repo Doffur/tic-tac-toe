@@ -1,26 +1,60 @@
 //module
 
-var gameBoard =(function(){
+let gameBoard =(function(){
     let initialBoard = []
-    var Board = document.querySelector('#gBoard');
+    let _Board = document.querySelector('#gBoard');
+
     function createBoard(){
-        console.log('hello');
+        console.log(typeof {'1':1});
+        let arrpos = 0;
         for(let a = 0; a < 9;a++){   
             let boardPiece = document.createElement('div');
             boardPiece.classList.add("board-piece");
             boardPiece.setAttribute('id',a);
-            Board.appendChild(boardPiece);
-        }
+            _Board.appendChild(boardPiece);
+            var obj = {}
+            obj[a] = ""   
+            initialBoard.push(obj);
 
+        }
+        
     }
+ 
+
     return {
+        wholeBoard : initialBoard,
         setBoard : createBoard()
     };
 
 })();
-//factory function
-// let player =()=>{
-// };
+
+
+let Player =(number)=>{
+    let playerInput = ["X","O"]
+   
+    function insertValue(event){
+        let currentPiece = document.getElementById(`${event.target.id}`)
+        currentPiece.textContent = `${playerInput[number]}`;
+    }   
+    return {
+        trigger : insertValue()
+
+    };
+
+};
 
 
 gameBoard.setBoard;
+
+
+//player alternate input
+
+
+function gameStart(){
+   
+    console.log(e);
+
+
+}
+let _boardPiece = document.querySelectorAll('.board-piece');
+_boardPiece.forEach(piece => piece.addEventListener('click',gameStart))
