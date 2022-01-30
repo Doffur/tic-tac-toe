@@ -1,60 +1,76 @@
+//factory functions
+let Player =(number,currentBlock)=>{
+    let _playerInput = ["X","O"]
+    
+    let playerVal = () => {
+        let input;
+        number == 0? input = _playerInput[number]:input = _playerInput[number];
+        currentBlock.textContent = input ;
+    }
+   
+return {playerVal};
+
+};
+
 //module
-
 let gameBoard =(function(){
-    let initialBoard = []
+    let _initialBoard = []
     let _Board = document.querySelector('#gBoard');
-
-    function createBoard(){
-        console.log(typeof {'1':1});
+   
+   
+    //create the board
+    function _createBoard(){
         let arrpos = 0;
-        for(let a = 0; a < 9;a++){   
+        for(let boardNumber = 0; boardNumber < 9;boardNumber++){   
             let boardPiece = document.createElement('div');
             boardPiece.classList.add("board-piece");
-            boardPiece.setAttribute('id',a);
+            boardPiece.setAttribute('id',boardNumber);
             _Board.appendChild(boardPiece);
-            var obj = {}
-            obj[a] = ""   
-            initialBoard.push(obj);
-
+            var obj = {};
+            obj["boardNumber"] = boardNumber
+            obj["value"] = "";   
+            _initialBoard.push(obj);
         }
-        
+    };
+    // current player inputs
+    function _currentPlayer(){
+        let _boardPiece = document.querySelectorAll('.board-piece');
+        _boardPiece.forEach(piece => piece.addEventListener('click',_insertValue));
     }
- 
+
+    //insert the value of the player
+    function _insertValue(event){
+        let currentPiece = document.getElementById(`${event.target.id}`)
+        let cplayer;
+        let _players = [{ "player1": Player(0,currentPiece)},{"player2": Player(1,currentPiece)}]
+        
+        //condition below checks if the lenght of the board is odd or even to for player inputs
+        !(_initialBoard.filter(bpiece => bpiece.value == "").length % 2 ==  0)? cplayer = 0: cplayer=1;
+        _players[cplayer][`player${cplayer+1}`].playerVal();//_players[index][objectkey].factoryfunction
+        _initialBoard[event.target.id]["value"] = currentPiece.textContent;
+    };
+
+    //render function 
+      function renderGame(){
+          //create the 3x3 board
+        _createBoard();
+        console.log("hello");
+        _currentPlayer();
+
+    };
 
     return {
-        wholeBoard : initialBoard,
-        setBoard : createBoard()
+        startGame : renderGame(),
+        board : _initialBoard
     };
 
 })();
 
 
-let Player =(number)=>{
-    let playerInput = ["X","O"]
-   
-    function insertValue(event){
-        let currentPiece = document.getElementById(`${event.target.id}`)
-        currentPiece.textContent = `${playerInput[number]}`;
-    }   
-    return {
-        trigger : insertValue()
-
-    };
-
-};
 
 
-gameBoard.setBoard;
+gameBoard.startGame;
 
 
-//player alternate input
 
 
-function gameStart(){
-   
-    console.log(e);
-
-
-}
-let _boardPiece = document.querySelectorAll('.board-piece');
-_boardPiece.forEach(piece => piece.addEventListener('click',gameStart))
