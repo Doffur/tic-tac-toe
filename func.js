@@ -1,35 +1,28 @@
 //factory functions
 let Player =(number,currentBlock,inputArray,boardValue)=>{
     let _playerInput = ["X","O"]
-
-    let _patterns = [[[0,1,2],[0,3,6],[0,4,8]],
-                     [[1,4,7]],
-                     [[2,4,6],[2,5,8]],
-                     [[3,4,8]],
-                     [[6,7,8]]];
-
     let playerVal = () => {
         let input;
         number == 0? input = _playerInput[number]:input = _playerInput[number];
         //check if thers a value
-        if( inputArray["value"].length == 0){
+        if( inputArray["value"] == ""){
             currentBlock.textContent = input ; //input the value in the current clicked box
-            inputArray["value"] =  currentBlock.textContent;//insert the value in the array _initialBoard
+            inputArray["value"] =  currentBlock.textContent;
+            if(boardValue+1 >= 5){
+                _checkBoard();
+            }
         }else{
             gameBoard.inputAgain;
         }
 
-        if(boardValue+1 >= 5){
-            _checkBoard();
-        }
         
-        
-        
+            
     }
+
     let _checkBoard = ()=>{
         let board = gameBoard.board
-        let row=0 , col=0,xright = 0,xleft =0;
-        let boardValues = [0,1,2,3,4,5,6,7,8];
+
+        //returns the main index of the current input
         let mainIndex = ()=>{
             let row,col,indx,indx2;
                 for(let count=0;count<3;count++){
@@ -47,8 +40,8 @@ let Player =(number,currentBlock,inputArray,boardValue)=>{
             return [row,col];
                 
         }
-       //create a filter arrat which find the main index of the inputter value
         //check row and col
+        let row=0,col=0;
         for(let counter = mainIndex()[0];counter < mainIndex()[0]+1;counter++){
             for(let count=0;count < 3;count++){
                 if(board[counter][count]["value"] == _playerInput[number]){
@@ -66,31 +59,40 @@ let Player =(number,currentBlock,inputArray,boardValue)=>{
                     console.log(board[counter]);
                     console.log(`winner is ${number+1}`);
                     }
-           
         }
-        //create x
+        //end of checking row and col
+
         //check X 
-        // if(inputArray["boardNumber"]%2==0){
-        //     let count = 0, xrange = 3;
-        //     let condition = counter <
-        //     console.log("hello");
-        //     for(let counter=0;counter<2;counter++){
-        //         while(count<xrange){
-        //             if(board[count][count]["value"] == _playerInput[number]){
-                            
-        //             }
-                    
-        //         }
-
-        //     }
-        // }
-
-  
-     
+        if(inputArray["boardNumber"]%2==0){
+            let leftX = 0,rightX = 0;
+            let xrange = 2;
+            console.log("hello");
+            for(let counter=0;counter<2;counter++){
+               for(let count = 0; count<3;count++){
+                   //checks the left of X
+                    if(board[count][count]["value"] == _playerInput[number] && counter == 0){
+                          leftX+=1;      
+                    } 
+                    //checks the right of X
+                    else if(board[count][xrange]["value"] == _playerInput[number]){
+                          rightX+=1;    
+                          xrange-=1;
+                    }
+               }
+               if(leftX == 3){
+                    console.log("X");
+                    console.log(`winner is ${number+1}`);
+                    break;
+                }
+                else if(rightX == 3){
+                    console.log("Y");
+                    console.log(`winner is ${number+1}`);
+                }
+            }
+        }
+        //end of check X 
     }
 
-
-   
 return {playerVal};
 
 };
@@ -178,4 +180,7 @@ let gameBoard =(function(){
         board : _mainBoard
     };
 })();
+
+
+//initiates the game
 gameBoard.startGame;
