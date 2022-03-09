@@ -6,13 +6,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic-Tac-Toe</title>
     <link rel="stylesheet" type="text/css" href="reset.css">
-    <link rel="stylesheet" type="text/css" href="design.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="design.css">  
+
 </head>
 
 <body>
-    <div id ="winner">
-        <div id = "gBoard"></div>
+    <div id ="upper" class="center">
+        <h1 id="title">TIC-TAC-TOE</h1>
     </div>
+    <div id="enemysel" class="center ">
+        
+        <div class="center"></div>
+        <div id ="options" class="center">
+          <button id="player"class="sbutton pulse select">Player</button>
+          <p>VS.</p>
+          <button id="bot"class="sbutton pulse select">AI</button> | 
+
+          <button id ="reset" class="sbutton pulse"><i id ="reset2" class="sbutton fa fa-refresh"></i></button>
+        </div>
+        
+    </div>
+    <div id ="game" class="center">
+        <div id = "gBoard"></div>
+
+        <div id ="details"> 
+            <div class ="detail">
+                <div  class = "player-name center">
+                    <p class="player-1" >Player</p>
+                </div>
+                <div class ="player-score center">
+                    0
+                </div>
+            </div>
+
+            <div class ="detail">
+                <div  class ="player-score center">
+                 0
+                </div>
+                <div  class= "player-name center">
+                    <p class="player-2">Player</p>
+                </div> 
+            </div>  
+
+        </div>
+        
+        <div id ="other" class="hide center">
+            <div id ="modal-content">
+                <div id ="players"class = "hide">
+                    <div  class="name center">
+                        <label for="player1">
+                            <b>Player 1</b>
+                        </label>
+                        <input type="text" id="p1"placeholder="Player-1" name="player1" required>
+                        <label for="player2">
+                            <b>Player 2</b>
+                        </label>
+                        <input type="text" id="p2"placeholder="Player-2" name="player2" required>
+                        
+                        <div class ="approve">
+                            <div><button id ="accept" onclick="">OK</button></div>
+                            <div><button id ="cancel">Cancel</button></div>
+                        </div>
+                    </div>  
+                </div>
+                <div id = "ai" class = "hide">
+                    <div class="name center">
+                            
+                        <label for="player">
+                            <select name="playernum" id="pnumber">
+                                <option value="player-1">Player-1</option>
+                                <option value="player-2">Player-2</option>
+                            </select> 
+                        </label> 
+                            <input type="text" id="player"placeholder="Player" name="player" required>
+                        <div class ="approve">
+                            <div><button id ="accept">OK</button></div>
+                            <div><button id ="cancel">Cancel</button></div>
+                        </div>
+                    </div>
+                </div>
+                    <br>
+                    <div id = "res" class = "hide center">3</div>
+            </div>
+        </div> 
+    </div>
+
+   
+   
 <script src="func.js"></script>
 </body>
 </html>
