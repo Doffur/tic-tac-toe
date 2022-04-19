@@ -33,19 +33,19 @@
         <div id ="details"> 
             <div class ="detail">
                 <div  class = "player-name center">
-                    <p class="player-1" >Player</p>
+                    <p id="player-1" >Player</p>
                 </div>
-                <div class ="player-score center">
+                <div id = "pScore1"class ="player-score center">
                     0
                 </div>
             </div>
 
             <div class ="detail">
-                <div  class ="player-score center">
+                <div  id = "pScore2" class ="player-score center">
                  0
                 </div>
                 <div  class= "player-name center">
-                    <p class="player-2">Player</p>
+                    <p id="player-2">Player</p>
                 </div> 
             </div>  
 
@@ -53,22 +53,22 @@
         
         <div id ="other" class="hide center">
             <div id ="modal-content">
-                <div id ="players"class = "hide">
+                <div id ="players"class = "hide"> 
                     <div  class="name center">
-                        <label for="player1">
-                            <b>Player 1</b>
-                        </label>
-                        <input type="text" id="p1"placeholder="Player-1" name="player1" required>
-                        <label for="player2">
-                            <b>Player 2</b>
-                        </label>
-                        <input type="text" id="p2"placeholder="Player-2" name="player2" required>
-                        
-                        <div class ="approve">
-                            <div><button id ="accept" onclick="">OK</button></div>
-                            <div><button id ="cancel">Cancel</button></div>
-                        </div>
-                    </div>  
+                        <form>
+                            <label for="player1">
+                                <b>Player 1</b>
+                            </label>
+                            <input type="text" id="p1"placeholder="Player-1" name="player1" value="Player-1">
+                            <label for="player2">
+                                <b>Player 2</b>
+                            </label>
+                            <input type="text" id="p2"placeholder="Player-2" name="player2" value="Player-2"> 
+                            <button type="button" id ="accept1" class="accept">OK</button>
+                            <button  type="button" id ="cancel1" >Cancel</button>
+                        </form>                  
+                    </div> 
+                 
                 </div>
                 <div id = "ai" class = "hide">
                     <div class="name center">
@@ -81,15 +81,27 @@
                         </label> 
                             <input type="text" id="player"placeholder="Player" name="player" required>
                         <div class ="approve">
-                            <div><button id ="accept">OK</button></div>
-                            <div><button id ="cancel">Cancel</button></div>
+                            <div ><button id ="accept2" class="accept">OK</button></div>
+                            <div><button id ="cancel2">Cancel</button></div>
                         </div>
                     </div>
                 </div>
-                    <br>
-                    <div id = "res" class = "hide center">3</div>
+                <br>
             </div>
+                
         </div> 
+      
+    </div>  
+    <div id = "res" class = "hide result center">
+                    <div > 
+                        <div class="des"><p>The winner for this round is <span id ="round"></span></p></div>
+                        <div ><button id ="continue" class="accept">Continue</button></div>
+                        <div><button id ="end">End Game</button></div>
+                    </div>
+                 
+    </div>   
+    <div id="verdict" class = "hide result">
+
     </div>
 
    

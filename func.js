@@ -44,14 +44,17 @@ let Player =(number,currentBlock,inputArray,boardValue)=>{
                 }
             }
             if(row == 3){
-
                 console.log(board[counter]);
                 console.log(`winner is ${number+1}`);
+                    gameSetting.result("res");
+                    _checkWinner(number); 
                 }
             else if(col == 3){
                     console.log(board[counter]);
                     console.log(`winner is ${number+1}`);
-                    }
+                    gameSetting.result("res");
+                    _checkWinner(number);
+                }
         }
         //end of checking row and col
 
@@ -74,15 +77,32 @@ let Player =(number,currentBlock,inputArray,boardValue)=>{
                if(leftX == 3){
                     console.log("X");
                     console.log(`winner is ${number+1}`);
+                    gameSetting.result("res");
+                    _checkWinner(number);
+                    gameSetting.close;
                     break;
                 }
                 else if(rightX == 3){
                     console.log("Y");
                     console.log(`winner is ${number+1}`);
+                    gameSetting.result("res");
+                    _checkWinner(number);
+                    gameSetting.close;
                 }
             }
         }
         //end of check X 
+    }
+
+    let _checkWinner = (playerN)=>{
+        let p1 = document.getElementById("pScore1")
+        ,p2 = document.getElementById("pScore2")
+        ,winner = document.getElementById("round");
+        
+        let pScore = {"1":p1,"2":p2}
+
+        pScore[playerN+1].textContent = parseInt(pScore[playerN+1].textContent)  + 1;
+        winner.textContent = playerN+1;
     }
 
 return {playerVal};
@@ -93,17 +113,19 @@ return {playerVal};
 //module
 let gameSetting =(function(){
     let mainBoard = []
-    let playersName = []
-    let _Board = document.querySelector('#gBoard');
-    let _buttonsSel = document.querySelectorAll('.select') 
-    let _buttons = document.querySelectorAll('.sbutton')
-    let _main = document.getElementById("other")
-    let _pl = document.getElementById("players")
-    let _ai = document.getElementById("ai")
-    let _res = document.getElementById("res")
+     ,playersName = []
+     ,_Board = document.querySelector('#gBoard')
+     ,_buttonsSel = document.querySelectorAll('.select') 
+     ,_buttons = document.querySelectorAll('.sbutton')
+     ,_main = document.getElementById("other")
+     ,_pl = document.getElementById("players")
+     ,_ai = document.getElementById("ai")
+     ,_res = document.getElementById("res")
+     ,_player1Name = document.getElementById("p1")
+     ,_player2Name = document.getElementById("p2");
+
     //*create the board
     function _createBoard(){
-        let arrpos = 0;
         let initialBoard = []
 
         for(let boardNumber = 0; boardNumber < 9;boardNumber++){   
@@ -122,7 +144,6 @@ let gameSetting =(function(){
             
         }
     };
-    
     //*insert the value of the player
     function _insertValue(event,enemy){
             let currentPiece = document.getElementById(`${event}`)
@@ -143,13 +164,20 @@ let gameSetting =(function(){
             }
             //condition below checks if the lenght of the board is odd or even to determine who will input
             let inputted = 0;
+            let totalScore = _checkScore()
             mainBoard.filter(bpiece => {
                 for(let count=0;count<bpiece.length;count++){
                     bpiece[count]["value"].length == 1?inputted+=1:inputted+=0; 
                 }
             });
-        
-            inputted%2 == 0?currentPlayer = 0: currentPlayer=1; 
+
+            if(totalScore%2 == 0){
+                inputted%2 == 0?currentPlayer = 0: currentPlayer=1; 
+            }else if(totalScore%2 != 0){
+                inputted%2 == 0?currentPlayer = 1: currentPlayer=0; 
+            }
+            
+
             let _players;
             if(enemy == "player"){
                 _players = [
@@ -180,91 +208,164 @@ let gameSetting =(function(){
                 // }
             }
     };
+    function _checkScore(){
+        let p1 = parseInt(document.getElementById("pScore1").textContent)
+        let p2 = parseInt(document.getElementById("pScore2").textContent)
+        return p1 + p2;
+    }
 
     function _setGame(event){ 
-        let boardPiece = document.querySelectorAll('.board-piece');
+       
         if(event.target.id == "reset" || event.target.id == "reset2"){ 
-            _resetGame();
-        
+            resetGame();
         }else{
             //add highlights of the button
-            let _highlight = document.getElementsByClassName('active');
+            let _highlight = document.getElementsByClassName('active')
             if (_highlight.length>0){
             _highlight[0].className = _highlight[0].className.replace(" active", "");  
             } 
-            _openModal(event.target.id);
+            openModal(event.target.id);
             event.target.classList.add("active"); 
             for(let a = 0,b;b = _buttonsSel[a];a++ ){
                 b.disabled = true;
-            //insertion of value per piece of the board is clicked    
-            boardPiece.forEach(piece => piece.addEventListener('click',(e)=>{
-                _insertValue(e.target.id,event.target.id);
-            })); 
-        } 
+            }//END add highlights of the button
+       
+            //insertion of value per piece of the board is clicked 
+            if(event.target.id == "player"){
+                let start = document.getElementById("accept1")
+                let _playersHighlight= document.querySelectorAll(".player-name");
+                let _phighlight = document.getElementsByClassName('pActive')
+
+                _playersHighlight[0].classList.add("pActive"); 
+                start.onclick = () =>{
+                    _main.classList.add("hide");
+                    setName(event.target.id);
+                    let boardPiece = document.querySelectorAll('.board-piece');
+                    boardPiece.forEach(piece => piece.addEventListener('click',(e)=>{
+                        let hplayer = 0, hp ;
+                        //highlight player
+                        mainBoard.filter(bpiece => {
+                            for(let count=0;count<bpiece.length;count++){
+                                bpiece[count]["value"].length == 1?hplayer+=1:hplayer+=0; 
+                            }
+                        }); 
+                        if(_checkScore()%2==0){
+                            hplayer%2 == 0?hp = 1: hp=0; 
+                        }else if(_checkScore()%2!=0){
+                            hplayer%2 == 0?hp = 0: hp=1; 
+                        }
+                        
+                        if (_phighlight.length>0){
+                            _phighlight[0].className = _phighlight[0].className.replace(" pActive", "");  
+                            } 
+                        _playersHighlight[hp].classList.add("pActive"); 
+                        for(let a = 0,b;b = _playersHighlight[a];a++ ){
+                            b.disabled = true;
+                        } // END highlight player
+
+                        _insertValue(e.target.id,event.target.id);
+                    })); 
+                    
+                }
+                closeModal();
+                
+
+            }else if(event.target.id == "bot"){
+                
+                closeModal();
+            }
+            
+          
+             
         }
             
     };
 
-    function _resetGame(){
-        //resets the board
+    function setName(hPlayers){
+        if(hPlayers == "player"){
+            _pl.classList.add("hide");
+            document.getElementById("player-1").textContent = _player1Name.value;
+            document.getElementById("player-2").textContent = _player2Name.value;
+        }
+    }
+
+    function resetGame(){
+        //resets the page
+        location.reload();
+    }
+    function resetBoard(){
         let boardPieces = document.querySelectorAll('.board-piece');
-        for(let a = 0,b;b = _buttonsSel[a];a++ ){
-            b.disabled = false;
-            b.classList.remove("active");
-        } 
         mainBoard.filter(bpiece => {
             for(let count=0;count<bpiece.length;count++){
                 bpiece[count]["value"]=""; 
             }
         });
         boardPieces.forEach(piece=>piece.textContent="");
-
-        //resets the modal-content
-        _main.classList.add("hide");
-        _pl.classList.add("hide");
-        _ai.classList.add("hide");
-        _res.classList.add("hide");
     }
-    function _openModal(open){
-            _main.classList.remove("hide");
+    function openModal(open){
+            
             if(open == "player"){
+                _main.classList.remove("hide");
                 _pl.classList.remove("hide");
             }else if(open == "bot"){
+                _main.classList.remove("hide");
                 _ai.classList.remove("hide");
             }else if(open == "res"){
                 _res.classList.remove("hide");
+                closeModal();
             }
 
     }
-    function _closeModal(){
+    function closeModal(){
         window.onclick = function(event){
-            console.log(event.target.id);
-            if(["other","upper","title","cancel"].includes(event.target.id) && !(_main.classList.contains("hide"))){  
-                _resetGame();
+            console.log(event.target.id == "end");
+            switch(true){
+                case (["other","upper","title","cancel1","cancel2"].includes(event.target.id)):
+                    for(let a = 0,b;b = _buttonsSel[a];a++ ){
+                        b.disabled = false;
+                        b.classList.remove("active");
+                    } 
+                    _main.classList.add("hide");
+                    _ai.classList.add("hide");
+                    _res.classList.add("hide");
+                    _pl.classList.add("hide");
+                    break;
+                case (event.target.id == "continue"):
+                    _res.classList.add("hide");
+                    let boardPieces = document.querySelectorAll('.board-piece');
+                    mainBoard.filter(bpiece => {
+                        for(let count=0;count<bpiece.length;count++){
+                            bpiece[count]["value"]=""; 
+                        }
+                    });
+                    boardPieces.forEach(piece=>piece.textContent="");
+                    break;
+                case (event.target.id == "end"):
+                    resetGame();
+                    break;
+
             }
+           
         }
     }
     function renderGame(){
-        _createBoard();     
-        _buttons.forEach(btn=>btn.addEventListener("click",_setGame))
-        _closeModal();  
+        _createBoard(); 
+        _buttons.forEach(btn=>btn.addEventListener("click",_setGame)) 
     };
-
-   
 
     //return
     return {
         startGame : renderGame(),
         board : mainBoard,
-        players:playersName
+        players:playersName,
+        reset:resetGame,
+        set: setName,
+        result:openModal,
+        resetBoard: resetBoard,
+        close:closeModal
 
     };
 })();
-
-
 //initiates the game
 gameSetting.startGame
-
-
-
 //add ai options
